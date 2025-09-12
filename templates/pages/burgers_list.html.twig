@@ -1,0 +1,34 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+  Liste des burgers - CRUDcroustillant
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<h1>Liste des burgers</h1>
+	</div>
+	<table class="table table-hover mt-4">
+		<thead>
+			<tr>
+				<th scope="col">Burgers</th>
+				<th scope="col">Prix</th>
+				<th scope="col">Pain</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+
+    {% for burger in burgers %}
+      <tr>
+				<th scope="row">{{ burger.name }}</th>
+				<td>{{ burger.price }}</td>
+				<td>{{ burger.pain.name }}</td>
+				<td>
+					<a href="{{ path('burger_show', { id: burger.id }) }}" class="btn btn-info">Détail</a>
+				</td>
+			</tr>
+    {% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

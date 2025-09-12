@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ burger.name }}
+	- CRUDcroustillant
+{% endblock %}
+
+{% block body %}
+	<div class="card mx-auto mt-4" style="width: 18rem;">
+		<img src="..." class="card-img-top" alt="...">
+		<div class="card-body">
+			<h5 class="card-title">{{ burger.name }}</h5>
+			<p class="card-text">{{ burger.price }} €</p>
+            
+			<p class="card-text">{{ burger.pain.name }}</p>
+		</div>
+	</div>
+{% endblock %}

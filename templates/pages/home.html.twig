@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Home - CRUDcroustillant
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<h1>Bienvenue sur CRUDcroustillant !</h1>
+	</div>
+
+<div id="carouselExample" class="carousel slide d-block w-50 mx-auto mt-4" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/The_Krusty_Krab.png/1200px-The_Krusty_Krab.png" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="https://jai-un-pote-dans-la.com/wp-content/uploads/2022/10/jupdlc-bob-eponge-burger-king-2.jpg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="https://uploads.lebonbon.fr/source/2022/lille/Le-restaurant-Krusty-Krab-dans-Bob-l-eponge-1083575.jpg" class="d-block w-100" alt="...">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+{% endblock %}
