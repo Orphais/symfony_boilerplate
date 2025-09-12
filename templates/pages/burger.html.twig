@@ -7,7 +7,7 @@
 
 {% block body %}
 	<div class="card mx-auto mt-4" style="width: 18rem;">
-		<img src="..." class="card-img-top" alt="...">
+		<img src="{{ burger.image[0].name }}" class="card-img-top" alt="...">
 		<div class="card-body">
 			<h5 class="card-title">{{ burger.name }}</h5>
 			<p class="card-text">{{ burger.price }} €</p>
