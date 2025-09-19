@@ -1,12 +1,52 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-  Liste des burgers - CRUDcroustillant
+	Liste des burgers - CRUDcroustillant
 {% endblock %}
 
 {% block body %}
+
+	{% for message in app.flashes('error') %}
+		<div class="alert alert-danger mt-4">
+			{{ message }}
+		</div>
+	{% endfor %}
+	{% for message in app.flashes('info') %}
+		<div class="alert alert-info mt-4">
+			{{ message }}
+		</div>
+	{% endfor %}
+
 	<div class="container mt-4">
-		<h1>Liste des burgers</h1>
+		<div class="d-flex justify-content-between align-items-center">
+			<h1>Liste des burgers</h1>
+			<div class="d-flex flex-column gap-2">
+				<a href="{{ path('burger_show_oignon') }}" class="btn btn-outline-primary">Burgers avec oignons</a>
+				<a href="{{ path('burger_show_top_5') }}" class="btn btn-outline-primary">5 burgers les plus chers</a>
+			</div>
+			<div>
+				<form method="get" class="mt-2">
+					<div class="mb-3">
+						<label for="search" class="form-label">Rechercher</label>
+						<div class="input-group">
+							<input type="text" name="search" id="search" class="form-control" placeholder="Ingrédient" value="{{ app.request.get('search') }}">
+						</div>
+						ou
+						<div class="input-group mt-2">
+							<input type="text" name="searchPrice" id="searchPrice" class="form-control" placeholder="Limite tri décroissant" value="{{ app.request.get('searchPrice') }}">
+						</div>
+					</div>
+					<div class="d-flex gap-2">
+						<a href="{{ path('burgers_list') }}" class="btn btn-light flex-grow-1">
+							Réinitialiser
+						</a>
+						<button type="submit" class="btn btn-primary flex-grow-1">
+							Filtrer
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
 	<table class="table table-hover mt-4">
 		<thead>
@@ -19,16 +59,22 @@
 		</thead>
 		<tbody>
 
-    {% for burger in burgers %}
-      <tr>
-				<th scope="row">{{ burger.name }}</th>
-				<td>{{ burger.price }}</td>
-				<td>{{ burger.pain.name }}</td>
-				<td>
-					<a href="{{ path('burger_show', { id: burger.id }) }}" class="btn btn-info">Détails</a>
-				</td>
-			</tr>
-    {% endfor %}
+			{% for burger in burgers %}
+				<tr>
+					<th scope="row">{{ burger.name }}</th>
+					<td>{{ burger.price }}</td>
+					<td>{{ burger.pain.name }}</td>
+					<td>
+						<a href="{{ path('burger_show', { id: burger.id }) }}" class="btn btn-info">Détails</a>
+					</td>
+				</tr>
+			{% endfor %}
+			{% if burgers is empty %}
+				<tr>
+					<td colspan="4" class="text-center">Aucun burger trouvé</td>
+				</tr>
+			{% endif %}
+
 		</tbody>
 	</table>
 {% endblock %}

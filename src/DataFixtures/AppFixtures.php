@@ -16,67 +16,87 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create();
+        $faker = Factory::create('fr_FR');
 
-        // 25 Pains
+        // Création de 25 Pains
         $pains = [];
         for ($i = 0; $i < 25; $i++) {
             $pain = new Pain();
-            $pain->setName($faker->word() . ' Pain');
+            $pain->setName($faker->randomElement(['Bun', 'Brioche', 'Complet', 'Sésame', 'Céréales']) . ' Pain #' . ($i + 1));
             $manager->persist($pain);
             $pains[] = $pain;
         }
 
-        // 25 Oignons
+        // Création de 25 Oignons
         $oignons = [];
         for ($i = 0; $i < 25; $i++) {
             $oignon = new Oignon();
-            $oignon->setName($faker->word() . ' Oignon');
+            $oignon->setName($faker->randomElement(['Rouge', 'Blanc', 'Caramélisé', 'Frit', 'Grillé']) . ' Oignon #' . ($i + 1));
             $manager->persist($oignon);
             $oignons[] = $oignon;
         }
 
-        // 25 Sauces
+        // Création de 25 Sauces
         $sauces = [];
         for ($i = 0; $i < 25; $i++) {
             $sauce = new Sauce();
-            $sauce->setName($faker->word() . ' Sauce');
+            $sauce->setName($faker->randomElement(['Ketchup', 'Mayonnaise', 'Moutarde', 'BBQ', 'Algérienne', 'Harissa', 'Biggy']) . ' Sauce #' . ($i + 1));
             $manager->persist($sauce);
             $sauces[] = $sauce;
         }
 
-        // 25 Commentaires
-        $commentaires = [];
-        for ($i = 0; $i < 25; $i++) {
-            $commentaire = new Commentaire();
-            $commentaire->setName($faker->sentence(3));
-            $manager->persist($commentaire);
-            $commentaires[] = $commentaire;
-        }
-
-        // 25 Images
         $images = [];
+        $imageUrls = [
+            "https://ffcuisine.fr/wp-content/uploads/2024/11/115370_recette-facile-dassiette-kebab-maison-savourez-le-gout-authentique.jpg",
+            "https://api.cloudly.space/resize/cropratio/640/640/75/aHR0cHM6Ly9jZHQ0MC5tZWRpYS50b3VyaW5zb2Z0LmV1L3VwbG9hZC9idXJnZXIta2luZy0tMi5qcGc=/image.webp",
+            "https://img.uniform.global/p/8SI7cDY5Qj2eFfEwrkueow/vO06hmdmTwaQBe7TdBvz5Q-480-x-388-px.png",
+            "https://i-mom.unimedias.fr/2020/09/16/le-pate-de-crabe-de-bob-l-eponge.jpg?auto=format%2Ccompress&crop=faces&cs=tinysrgb&fit=crop&h=501&w=890"
+        ];
+
         for ($i = 0; $i < 25; $i++) {
             $image = new Image();
-            $image->setName("https://ffcuisine.fr/wp-content/uploads/2024/11/115370_recette-facile-dassiette-kebab-maison-savourez-le-gout-authentique.jpg");
+            $image->setName($imageUrls[array_rand($imageUrls)]);
             $manager->persist($image);
             $images[] = $image;
         }
 
-        // 25 Burgers
+        $manager->flush();
+
+        $burgers = [];
         for ($i = 0; $i < 25; $i++) {
             $burger = new Burger();
-            $burger->setName($faker->word() . ' Burger');
-            $burger->setPrice($faker->randomFloat(2, 4, 15));
+            $burger->setName($faker->randomElement(['Classic', 'Cheese', 'BBQ', 'Chicken', 'Veggie', 'Double', 'Deluxe']) . ' Burger #' . ($i + 1));
+            $burger->setPrice($faker->randomFloat(2, 4.99, 15.99));
 
-            // On associe un pain, un oignon, une sauce, un commentaire et une image aléatoires
             $burger->setPain($pains[array_rand($pains)]);
-            $burger->addOignon($oignons[array_rand($oignons)]);
-            $burger->addSauce($sauces[array_rand($sauces)]);
-            $burger->addCommentaire($commentaires[array_rand($commentaires)]);
-            $burger->addImage($images[array_rand($images)]);
 
+            $numberOfOignons = $faker->numberBetween(1, 3);
+            $selectedOignons = $faker->randomElements($oignons, $numberOfOignons);
+            foreach ($selectedOignons as $oignon) {
+                $burger->addOignon($oignon);
+            }
+
+            $numberOfSauces = $faker->numberBetween(1, 4);
+            $selectedSauces = $faker->randomElements($sauces, $numberOfSauces);
+            foreach ($selectedSauces as $sauce) {
+                $burger->addSauce($sauce);
+            }
+
+            $burger->setImage($images[$i]);
             $manager->persist($burger);
+            $burgers[] = $burger;
+        }
+
+        $manager->flush();
+
+        for ($i = 0; $i < 50; $i++) {
+            $commentaire = new Commentaire();
+            $commentaire->setName($faker->sentence($faker->numberBetween(3, 8)));
+
+            $selectedBurger = $burgers[array_rand($burgers)];
+            $commentaire->setBurger($selectedBurger);
+
+            $manager->persist($commentaire);
         }
 
         $manager->flush();

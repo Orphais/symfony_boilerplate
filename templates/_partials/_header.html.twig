@@ -11,7 +11,22 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ app.request.attributes.get('_route') == 'burgers_list' ? 'active' : '' }}" href="{{ path('burgers_list') }}">Liste des Burgers</a>
+          <a class="nav-link {{ app.request.attributes.get('_route') == 'burgers_list' ? 'active' : '' }}" href="{{ path('burgers_list') }}">Burgers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ app.request.attributes.get('_route') == 'commentaires_list' ? 'active' : '' }}" href="{{ path('commentaires_list') }}">Commentaires</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ app.request.attributes.get('_route') == 'images_list' ? 'active' : '' }}" href="{{ path('images_list') }}">Images</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ app.request.attributes.get('_route') == 'oignons_list' ? 'active' : '' }}" href="{{ path('oignons_list') }}">Oignons</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ app.request.attributes.get('_route') == 'pains_list' ? 'active' : '' }}" href="{{ path('pains_list') }}">Pains</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ app.request.attributes.get('_route') == 'sauces_list' ? 'active' : '' }}" href="{{ path('sauces_list') }}">Sauces</a>
         </li>
     </div>
   </div>

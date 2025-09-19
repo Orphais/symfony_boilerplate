@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Liste des pains - CRUDcroustillant
+{% endblock %}
+
+{% block body %}
+
+	{% for message in app.flashes('error') %}
+		<div class="alert alert-danger mt-4">
+			{{ message }}
+		</div>
+	{% endfor %}
+	<div class="container mt-4">
+		<h1>Liste des pains</h1>
+	</div>
+	<table class="table table-hover mt-4">
+		<thead>
+			<tr>
+				<th scope="col">Pain</th>
+				<th scope="col">Burger associé</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			{% for pain in pains2 %}
+				<tr>
+					<th scope="row">{{ pain[0].name }}</th>
+					<td>
+						{% for burger in pain[1] %}
+							{{ burger.name }}
+							{% if not loop.last %},
+							{% endif %}
+						{% endfor %}
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

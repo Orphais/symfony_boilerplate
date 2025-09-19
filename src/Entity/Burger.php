@@ -36,12 +36,9 @@ class Burger
     #[ORM\ManyToMany(targetEntity: Sauce::class, inversedBy: 'burgers')]
     private Collection $sauce;
 
-    /**
-     * @var Collection<int, Image>
-     */
-    #[ORM\ManyToMany(targetEntity: Image::class, inversedBy: 'burgers')]
-    private Collection $image;
-
+    #[ORM\OneToOne(targetEntity: Image::class, inversedBy: 'burger', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Image $image = null;
     /**
      * @var Collection<int, Commentaire>
      */
@@ -52,7 +49,6 @@ class Burger
     {
         $this->oignon = new ArrayCollection();
         $this->sauce = new ArrayCollection();
-        $this->image = new ArrayCollection();
         $this->commentaire = new ArrayCollection();
     }
 
@@ -69,7 +65,6 @@ class Burger
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -81,7 +76,6 @@ class Burger
     public function setPrice(float $price): static
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -93,7 +87,6 @@ class Burger
     public function setPain(?Pain $pain): static
     {
         $this->pain = $pain;
-
         return $this;
     }
 
@@ -110,14 +103,12 @@ class Burger
         if (!$this->oignon->contains($oignon)) {
             $this->oignon->add($oignon);
         }
-
         return $this;
     }
 
     public function removeOignon(Oignon $oignon): static
     {
         $this->oignon->removeElement($oignon);
-
         return $this;
     }
 
@@ -134,38 +125,24 @@ class Burger
         if (!$this->sauce->contains($sauce)) {
             $this->sauce->add($sauce);
         }
-
         return $this;
     }
 
     public function removeSauce(Sauce $sauce): static
     {
         $this->sauce->removeElement($sauce);
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Image>
-     */
-    public function getImage(): Collection
+    // CORRECTION : Méthodes pour relation OneToOne
+    public function getImage(): ?Image
     {
         return $this->image;
     }
 
-    public function addImage(Image $image): static
+    public function setImage(?Image $image): static
     {
-        if (!$this->image->contains($image)) {
-            $this->image->add($image);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): static
-    {
-        $this->image->removeElement($image);
-
+        $this->image = $image;
         return $this;
     }
 
@@ -183,19 +160,16 @@ class Burger
             $this->commentaire->add($commentaire);
             $commentaire->setBurger($this);
         }
-
         return $this;
     }
 
     public function removeCommentaire(Commentaire $commentaire): static
     {
         if ($this->commentaire->removeElement($commentaire)) {
-            // set the owning side to null (unless already changed)
             if ($commentaire->getBurger() === $this) {
                 $commentaire->setBurger(null);
             }
         }
-
         return $this;
     }
 }
